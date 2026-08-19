@@ -1,0 +1,56 @@
+position_group,archetype
+QB,Backfield Creator
+QB,Dual Threat
+QB,Pocket Passer
+QB,Pure Runner
+HB,Backfield Threat
+HB,Contact Seeker
+HB,East/West Playmaker
+HB,Elusive Bruiser
+FB,Blocking
+FB,Utility
+WR,Contested Specialist
+WR,Elusive Route Runner
+WR,Gadget
+WR,Gritty Possession
+WR,Physical Route Runner
+WR,Route Artist
+WR,Speedster
+TE,Gritty Possession
+TE,Physical Route Runner
+TE,Possession
+TE,Pure Blocker
+TE,Vertical Threat
+OT,Agile
+OT,Pass Protector
+OT,Raw Strength
+G,Agile
+G,Pass Protector
+G,Raw Strength
+G,Well Rounded
+C,Agile
+C,Pass Protector
+C,Raw Strength
+EDGE,Power Rusher
+EDGE,Pure Power
+EDGE,Run Stopper
+EDGE,Speed Rusher
+DT,Gap Specialist
+DT,Power Rusher
+DT,Pure Power
+DT,Speed Rusher
+MIKE,Lurker
+MIKE,Signal Caller
+MIKE,Thumper
+SAM/WILL,Lurker
+SAM/WILL,Signal Caller
+SAM/WILL,Thumper
+CB,Boundary
+CB,Bump and Run
+CB,Field
+CB,Zone
+S,Box Specialist
+S,Coverage Specialist
+S,Hybrid
+K/P,Accurate
+K/P,Power

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CFB27 Roster Bridge</title>
+<link rel="icon" type="image/png" href="img/icon48.png">
+<script src="theme.js"></script>
+<style>
+  :root{
+    --bg:#f6f5f1; --panel:#edebe5; --panel2:#e3e1da; --line:#d2cfc6;
+    --tx:#1d1f23; --mut:#6d7482; --acc:#3178d8; --ok:#2f8f44; --bad:#d0362d; --warn:#a8730a;
+    --btn-tx:#fff; --diag-bg:#dedcd4; --rowhov:#e7e5de;
+    --ok-line:#9cc9a6; --warn-line:#d4bc84; --bad-line:#dda49f;
+    --hdr-bg:#16181c; --hdr-tx:#f6f5f1; --hdr-mut:#9aa1ad;
+  }
+  [data-theme="dark"]{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2a2f3a;
+    --tx:#e8eaed; --mut:#8b93a3; --acc:#4a9eff; --ok:#3fb950; --bad:#f85149; --warn:#d29922;
+    --btn-tx:#fff; --diag-bg:#0b0d11; --rowhov:#1b1f28;
+    --ok-line:#265b32; --warn-line:#5b4a1a; --bad-line:#5b2320;
+    --hdr-bg:#f6f5f1; --hdr-tx:#1d1f23; --hdr-mut:#6d7482;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);
+    font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  button,select,input,textarea{font-family:inherit}
+  header{padding:8px 24px;background:var(--hdr-bg);color:var(--hdr-tx);display:flex;
+    align-items:end;gap:14px;flex-wrap:wrap}
+  header .muted{transform:translateY(3px)}
+  header .muted{color:var(--hdr-mut)}
+  #themeBtn,#infoBtn{align-self:center;background:none;border:1px solid var(--hdr-mut);
+    color:var(--hdr-mut);border-radius:7px;padding:3px 9px;font-size:13px;line-height:1.3;cursor:pointer}
+  #infoBtn{margin-left:auto}
+  #themeBtn:hover,#infoBtn:hover{color:var(--hdr-tx);border-color:var(--hdr-tx);filter:none}
+  h1 .wm-on-dark{display:none}
+  [data-theme="dark"] h1 .wm-on-light{display:none}
+  [data-theme="dark"] h1 .wm-on-dark{display:block}
+  h1{margin:0;align-self:center}
+  h1 img{display:block;height:24px;width:auto}
+  .muted{color:var(--mut)} .small{font-size:12px}
+  .ok{color:var(--ok)} .bad{color:var(--bad)}
+  main{padding:24px;max-width:1400px;margin:0 auto}
+
+  .bar{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-bottom:18px;
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+  label.f{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--mut)}
+  select,input[type=text],input[type=number]{background:var(--panel2);color:var(--tx);
+    border:1px solid var(--line);border-radius:7px;padding:7px 9px;font-size:13px;min-width:120px}
+  input[type=range]{accent-color:var(--acc);min-width:210px}
+  .capwarn{color:var(--warn)}
+  button{background:var(--acc);color:var(--btn-tx);border:0;border-radius:7px;padding:9px 15px;
+    font-size:13px;font-weight:600;cursor:pointer}
+  button.sec{background:var(--panel2);color:var(--tx);border:1px solid var(--line)}
+  button:hover{filter:brightness(1.12)}
+  button:disabled{opacity:.4;cursor:not-allowed;filter:none}
+
+  #tbBar{border-left:3px solid var(--acc)}
+  .tbstatus{margin-top:12px;font-size:12.5px;color:var(--mut);background:var(--panel2);
+    border:1px solid var(--line);border-radius:8px;padding:10px 14px;width:100%}
+  .tbstatus.ok{border-color:var(--ok-line);color:var(--tx)}
+  .tbstatus.warn{border-color:var(--warn-line);color:var(--tx)}
+  .tbstatus.bad{border-color:var(--bad-line);color:var(--bad)}
+  .tbstatus b{color:var(--tx)}
+  #tbPushed{display:none;margin-top:10px;font-size:12.5px;background:var(--panel2);
+    border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:8px;
+    padding:10px 14px;color:var(--mut);width:100%}
+  #tbPushed b{color:var(--tx)}
+  #tbDiag{display:none;margin:10px 0 0;width:100%;max-height:340px;overflow:auto;
+    background:var(--diag-bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;
+    font:11.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    color:var(--mut);white-space:pre-wrap;word-break:break-all;user-select:text}
+
+  #summary{display:none;gap:26px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:14px 18px;margin-bottom:18px}
+  .stat{display:flex;flex-direction:column}
+  .teamswatch{display:inline-block;width:18px;height:12px;border:1px solid var(--line);
+    border-radius:3px;vertical-align:-1px;margin-right:6px}
+  .teamlogo{display:inline-block;width:20px;height:20px;object-fit:contain;
+    background:#26272b;border:1px solid var(--line);border-radius:4px;padding:1px;
+    vertical-align:-5px;margin-right:6px}
+  .stat.team{flex-direction:row;gap:10px}
+  #teamChip{display:flex;align-items:center}
+  #teamChip:empty{display:none}
+  #teamChip .teamlogo{width:70px;height:70px;background:none;border:none;padding:0;
+    border-radius:0;vertical-align:middle;margin-right:0}
+  .stat label{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+
+  #loadStatus{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--mut);
+    border-radius:8px;padding:11px 15px;margin-bottom:18px;font-size:12.5px;color:var(--mut);
+    font-variant-numeric:tabular-nums}
+  #loadStatus.ok{border-left-color:var(--ok);color:var(--tx)}
+  #loadStatus.bad{border-left-color:var(--bad);color:var(--bad)}
+  #loadStatus summary{cursor:pointer;list-style:none}
+  #loadStatus summary::-webkit-details-marker{display:none}
+  #loadStatus summary::before{content:'▸ ';color:var(--mut);font-size:10px}
+  #loadStatus details[open]>summary::before{content:'▾ '}
+  #loadStatus .loadDetail{margin-top:6px;color:var(--mut)}
+  code{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:11.5px}
+
+  .predict{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--mut);
+    border-radius:8px;padding:11px 15px;margin-bottom:14px;font-size:12.5px;color:var(--mut)}
+  .predict b{color:var(--tx)}
+  .predict.good{border-left-color:var(--ok)}
+  .predict.warn{border-left-color:var(--warn)}
+  .predict.bad{border-left-color:var(--bad)}
+
+  .step{margin-bottom:20px}
+  .stephead{display:flex;align-items:baseline;gap:10px;margin:0 0 9px 2px}
+  .stephead h2{font-size:13px;margin:0;font-weight:600;letter-spacing:.01em}
+  .stephead .n{display:inline-flex;align-items:center;justify-content:center;width:19px;
+    height:19px;border-radius:50%;background:var(--acc);color:var(--btn-tx);font-size:11px;
+    font-weight:700;align-self:center}
+  .stephead .hint{color:var(--mut);font-size:12px}
+  .step .bar{margin-bottom:0}
+
+  details#pipeBox,details#dashBox,details#browseBox,details#usedBox{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    margin-top:10px}
+  details#pipeBox>summary,details#dashBox>summary,details#browseBox>summary,details#usedBox>summary{cursor:pointer;padding:11px 15px;font-size:12.5px;color:var(--tx);
+    list-style:none;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  details#pipeBox>summary::-webkit-details-marker,details#dashBox>summary::-webkit-details-marker,details#browseBox>summary::-webkit-details-marker,details#usedBox>summary::-webkit-details-marker{display:none}
+  details#pipeBox>summary::before,details#dashBox>summary::before,details#browseBox>summary::before,details#usedBox>summary::before{content:'▸';color:var(--mut);font-size:11px}
+  details#pipeBox[open]>summary::before,details#dashBox[open]>summary::before,details#browseBox[open]>summary::before,details#usedBox[open]>summary::before{content:'▾'}
+
+  .dashmeta{margin:11px 0 2px}
+  .dashh{margin:14px 0 7px;font-size:12.5px;font-weight:600}
+  .dashh .muted{font-weight:400}
+  .dashtable{font-variant-numeric:tabular-nums}
+  .dashtable th.dashsort{cursor:pointer;user-select:none}
+  .dashtable th.dashsort:hover{color:var(--tx)}
+  tr.dashdef td{background:rgba(248,81,73,.07)}
+  .gapbad{color:var(--bad);font-weight:600}
+  .gapok{color:var(--ok)}
+  .dashtones{display:flex;gap:10px;align-items:flex-end;background:var(--panel2);
+    border:1px solid var(--line);border-radius:8px;padding:10px 14px 8px}
+  .dashtone{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:38px}
+  .dashtonebar{width:26px;background:var(--acc);border-radius:3px 3px 0 0;align-self:center}
+  #pipeCount{color:var(--mut)}
+  .pipebody{padding:2px 15px 14px;border-top:1px solid var(--line)}
+  .pipetools{display:flex;gap:8px;margin:11px 0;align-items:center}
+  #pipeSearch{flex:1;min-width:160px;background:var(--panel2);border:1px solid var(--line);
+    border-radius:7px;color:var(--tx);font-size:12.5px;padding:6px 10px}
+  #pipeSearch:focus{outline:none;border-color:var(--acc)}
+  .pipewrap{position:relative}
+  #pipeMenu{position:absolute;z-index:30;top:calc(100% + 4px);left:0;right:0;max-height:260px;
+    overflow-y:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,.45)}
+  .pipeopt{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:6px 11px;cursor:pointer}
+  .pipeopt:hover{background:var(--panel2)}
+  .pipeopt span:first-of-type{flex:1}
+  .pipeopt.off{opacity:.35;cursor:not-allowed}
+  .pipeopt.off:hover{background:none}
+  .pipen{color:var(--mut);font-size:11px;font-variant-numeric:tabular-nums}
+  #pipeSel{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+  .piperow{display:flex;align-items:center;gap:10px;font-size:12.5px;padding:5px 10px;
+    background:var(--panel2);border:1px solid var(--line);border-radius:7px}
+  .piperow .pipename{flex:1}
+  .tierpick{display:flex;align-items:center;gap:6px;color:var(--mut);font-size:11.5px}
+  .tierpick select{background:var(--panel);border:1px solid var(--line);border-radius:6px;
+    color:var(--tx);font-size:12px;padding:2px 5px;min-width:auto}
+  .piperm{background:none;border:none;color:var(--mut);font-size:15px;line-height:1;
+    cursor:pointer;padding:2px 5px;border-radius:5px}
+  .piperm:hover{color:var(--tx);background:var(--panel)}
+  #pipeCount .fills{color:var(--ok)}
+  #pipeCount .thin{color:var(--warn)}
+
+  table{width:100%;border-collapse:collapse;background:var(--panel);
+    border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);font-size:13px}
+  th{background:var(--panel2);font-size:11px;text-transform:uppercase;letter-spacing:.04em;
+    color:var(--mut);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  tr:hover td{background:var(--rowhov)}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  td.pname{cursor:pointer}
+  td.pname:hover{color:var(--acc);text-decoration:underline}
+  .pos{background:var(--panel2);border:1px solid var(--line);border-radius:5px;
+    padding:1px 6px;font-size:11px;font-weight:600}
+
+  .bignum{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+  input[type=range]{min-width:130px;accent-color:var(--acc);padding:0}
+  #advBox{margin-top:10px}
+  #advBox>summary{cursor:pointer;font-size:12px;color:var(--mut);list-style:none;padding:4px 2px}
+  #advBox>summary::-webkit-details-marker{display:none}
+  #advBox>summary::before{content:'▸ ';font-size:10px}
+  #advBox[open]>summary::before{content:'▾ '}
+
+  #tbAdv{width:100%}
+  #tbAdv>summary{cursor:pointer;font-size:12px;color:var(--mut);list-style:none;padding:4px 2px}
+  #tbAdv>summary::-webkit-details-marker{display:none}
+  #tbAdv>summary::before{content:'▸ ';font-size:10px}
+  #tbAdv[open]>summary::before{content:'▾ '}
+
+  #blip{position:fixed;top:14px;right:16px;z-index:60;width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;border-radius:50%;
+    background:var(--panel2);border:1px solid var(--ok);color:var(--ok);
+    font-size:15px;opacity:0;pointer-events:none}
+  #blip.show{animation:blipfade 1.2s ease}
+  @keyframes blipfade{0%{opacity:0;transform:scale(.6)}15%{opacity:1;transform:scale(1)}
+    70%{opacity:1}100%{opacity:0;transform:scale(1)}}
+
+  #modal{position:fixed;inset:0;background:#000a;display:none;align-items:center;
+    justify-content:center;padding:24px;z-index:50}
+  #modal.open{display:flex}
+  .sheet{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    max-width:720px;width:100%;max-height:86vh;display:flex;flex-direction:column}
+  .sheet header{padding:16px 20px;display:block;border-bottom:0;
+    background:var(--panel);color:var(--tx)}
+  .sheet .body{padding:18px 20px;overflow:auto}
+  .sheet footer{padding:14px 20px;border-top:1px solid var(--line);display:flex;
+    gap:10px;justify-content:flex-end}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);
+    background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:11px 18px;
+    opacity:0;transition:.22s;pointer-events:none;font-size:13px}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast.bad{border-color:var(--bad);color:var(--bad)}
+  .toast.warn{border-color:var(--warn);color:var(--warn)}
+</style>
+</head>
+<body>
+<header>
+  <h1><img class="wm-on-light" src="img/wordmark.png" alt="CFB27 Roster Bridge"><img class="wm-on-dark" src="img/wordmark-dark.png" alt="CFB27 Roster Bridge"></h1>
+  <span class="muted small">Pull from Team Builder &rarr; name the roster &rarr; push back · nothing leaves your browser<span id="verTag"></span></span>
+  <button id="infoBtn" type="button" title="What this editor does">ⓘ</button>
+  <button id="themeBtn" type="button">☾</button>
+</header>
+
+<main>
+  <div id="blip" title="Change applied">↻</div>
+  <div id="loadStatus">loading data&hellip;</div>
+
+  <div class="bar" id="tbBar">
+        <button id="tbFind" class="sec">Find my team</button>
+    <label class="f" id="tbUrlWrap" style="display:none">Roster payload<select id="tbUrl" disabled><option>nothing found yet</option></select></label>
+    <button id="tbFetch" disabled>Pull team</button>
+    <span style="flex:1"></span>
+    <button id="tbPush" disabled>Push to Team Builder</button>
+    <details id="tbAdv">
+      <summary>Advanced</summary>
+      <div class="bar" style="margin-top:8px">
+        <button id="tbClear" class="sec" title="Stop serving your edited roster; Team Builder goes back to EA's own copy on the next reload.">Clear</button>
+        <button id="tbDiagBtn" class="sec" title="Show exactly what the extension can and cannot see.">Diagnostics</button>
+        <button id="tbDiagCopy" class="sec" title="Copy the diagnostics text to the clipboard.">Copy</button>
+        <button id="tbPassThrough" class="sec" title="Serve EA's OWN untouched roster back through the whole interception path. Nothing you edited is involved. If this works the transport is fine and something in the edited payload is what Team Builder rejects; if it fails, the payload was never the problem.">Test transport</button>
+        <label class="f" title="Load a prepared roster JSON in place of the pulled one. Push then sends the loaded roster to the team you pulled — pull your team first.">Load file
+          <input type="file" id="tbFile" accept=".json,application/json" style="min-width:200px;padding:5px"></label>
+      </div>
+    </details>
+    <div class="tbstatus" id="tbStatus">Open your team in EA Team Builder, then press <b>Find my team</b>.</div>
+    <div id="tbPushed"></div>
+    <pre id="tbDiag"></pre>
+  </div>
+
+  <div id="summary"></div>
+
+  <section class="step" id="solveBar" style="display:none">
+    <div class="stephead"><span class="n">1</span><h2>Ratings</h2>
+      <span class="hint" title="Computed with Team Builder's own rating engine (EA's weight tables), so these are the numbers Team Builder will display.">exactly what you'll see in Team Builder</span></div>
+        <div class="bar">
+      <label class="f" title="What the game will show for offense. The file is written higher to land here.">Offense
+        <span style="display:flex;gap:10px;align-items:center;height:31px">
+          <input type="range" id="offSlider" min="45" max="95" step="1" style="min-width:150px">
+          <input type="number" id="offTarget" min="45" max="95" step="1" style="min-width:70px"></span></label>
+      <label class="f" title="What the game will show for defense.">Defense
+        <span style="display:flex;gap:10px;align-items:center;height:31px">
+          <input type="range" id="defSlider" min="45" max="95" step="1" style="min-width:150px">
+          <input type="number" id="defTarget" min="45" max="95" step="1" style="min-width:70px"></span></label>
+      <label class="f">Team overall
+        <b class="bignum" id="teamVal" style="height:31px;display:flex;align-items:center">—</b></label>
+      <span style="width:16px"></span>
+            <label class="f" style="display:none">Offense scheme<select id="offScheme"></select></label>
+      <label class="f" style="display:none">Defense front<select id="defScheme"></select></label>
+            <label class="f" style="display:none">Prestige<select id="prestigeTier"></select></label>
+      <label class="f" style="display:none">Class curve
+        <span style="display:flex;gap:6px;align-items:center;height:31px">
+          <input type="checkbox" id="classCurve" checked style="min-width:auto;width:16px;height:16px">
+          <span class="small">respect</span></span></label>
+      <span style="flex:1"></span>
+      <button id="solve">Generate ratings</button>
+    </div>
+    <details id="advBox">
+      <summary>Advanced</summary>
+      <div class="bar" style="margin-top:8px">
+        <button id="diff" class="sec">Show changes</button>
+        <button id="revert" class="sec">Revert</button>
+        <span style="flex:1"></span>
+        <button id="save" class="sec">Download JSON</button>
+      </div>
+            <div class="bar" style="margin-top:8px">
+        <label class="f" title="The two numbers Team Builder showed after you pushed and pressed Save. Leave blank to export the push on its own.">What the game showed
+          <span style="display:flex;gap:6px;align-items:center;height:31px">
+            <input type="number" id="obsOff" min="0" max="99" step="1" placeholder="off" style="min-width:74px">
+            <input type="number" id="obsDef" min="0" max="99" step="1" placeholder="def" style="min-width:74px"></span></label>
+        <span class="muted small" style="align-self:center;max-width:430px">Everything needed to
+          interpret a reading, in one small file. The game is the only authority this
+          project has.</span>
+        <span style="flex:1"></span>
+        <button id="exportReading" class="sec" title="Write a JSON record of this push and what the game made of it.">Export reading</button>
+      </div>
+    </details>
+  </section>
+
+  <div id="solveOut" class="predict" style="display:none"></div>
+
+  <section class="step">
+    <div class="stephead"><span class="n">2</span><h2>Names</h2>
+      <span class="hint">real players, drawn from the pipelines you recruit</span>
+      <span style="flex:1"></span>
+    </div>
+    <div class="bar">
+      <label class="f" style="min-width:250px" title="How much of the roster is recruited from the pipelines below versus nationwide. 100% = everyone from your pipelines, spilling into bordering states only when a position runs dry; 0% = drawn from the whole country. Capped automatically when your pipelines are too thin — announced, never silent.">
+                <span>Recruiting reach — <span id="poolLocalVal">100</span>% from your pipelines</span>
+        <input type="range" id="poolLocal" min="0" max="100" step="5" value="100">
+      </label>
+      <span id="poolLocalCap" class="small" style="align-self:center"></span>
+      <span style="flex:1"></span>
+      <button id="poolName" title="Replace every player's name and bio with a real player from the pool. Ratings are untouched.">Name roster from pool</button>
+    </div>
+
+    <details id="pipeBox" open>
+      <summary>Recruiting pipelines <span id="pipeCount"></span></summary>
+      <div class="pipebody">
+        <div class="pipetools pipewrap">
+          <input id="pipeSearch" type="text" placeholder="Search pipelines — type, then click or press Enter to add" autocomplete="off">
+          <button id="pipeTop" class="sec">Top 10</button>
+          <button id="pipeNone" class="sec">Clear</button>
+          <div id="pipeMenu" style="display:none"></div>
+        </div>
+        <div id="pipeSel"></div>
+      </div>
+    </details>
+
+    <details id="browseBox">
+      <summary>Pool browser + pins <span class="muted small">pick exact players; the draw fills the rest</span>
+        <span id="pinCount" class="muted small" style="margin-left:auto"></span></summary>
+      <div class="pipebody">
+        <div id="pinList"></div>
+        <div class="pipetools pipewrap">
+          <input id="browseSearch" type="text" placeholder="Search the pool — name, school or hometown" autocomplete="off">
+          <select id="browseGroup"></select>
+          <select id="browsePipe" title="Add a pipeline to narrow the rows to just it — × a chip to widen again. Nothing added = the whole pool."></select>
+          <span id="browseCount" class="muted small" style="align-self:center"></span>
+        </div>
+        <div id="browsePipeSel" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px"></div>
+        <div id="browseRows"></div>
+      </div>
+    </details>
+
+    <details id="usedBox">
+      <summary>Used players <span class="muted small">a verified push registers a team's players; other teams' draws skip them</span>
+        <span id="usedCount" class="muted small" style="margin-left:auto"></span></summary>
+      <div class="pipebody">
+        <div id="usedWarn" style="display:none;margin-bottom:8px"></div>
+        <div id="usedList"></div>
+        <div class="pipetools" style="margin-top:8px">
+          <button id="usedReset" class="sec" title="Clear the whole registry — every claim released">Forget all teams</button>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <div id="poolOut" class="predict" style="display:none"></div>
+
+    <details id="dashBox" style="display:none">
+    <summary>Pool coverage
+      <span class="muted small" style="margin-left:auto">read-only — the --stats report, rendered</span></summary>
+    <div id="dashBody" class="pipebody"></div>
+  </details>
+
+  <div id="rosterBox" style="display:none">
+    <div class="bar">
+      <label class="f">Search<input type="text" id="search" placeholder="player name"></label>
+      <label class="f">Position<select id="filterGroup"></select></label>
+      <span style="flex:1"></span>
+            <button id="applyStars" class="sec" style="display:none"
+        title="Write every HS star rating and redshirt flag on this roster into the open Team Builder tab by driving TB's own roster screen (its widgets are the only route that survives TB's Save — the payload push carries neither). Open your team's ROSTER tab in TB first; press SAVE there afterwards.">Apply ★/RS in TB</button>
+      <span class="muted small" style="align-self:center">Showing <span id="count"></span></span>
+    </div>
+    <table>
+      <thead><tr>
+        <th class="num">#</th>
+        <th>Player</th>
+                <th data-sortcol="pos" style="cursor:pointer" title="Click to restore the in-game position order (QB first)">Pos<span class="sortmark"></span></th>
+                <th class="num" data-sortcol="ovr" style="cursor:pointer" title="The rating Team Builder will show, computed from attributes. Hover a value for the raw file number. Click to sort highest first; click again to flip.">OVR<span class="sortmark"></span></th>
+                <th>Archetype</th>
+                <th data-sortcol="class" style="cursor:pointer" title="Click to sort seniors first; click again to flip">Class<span class="sortmark"></span></th>
+                <th data-sortcol="dev" style="cursor:pointer" title="Click to sort Elite first; click again to flip">Dev<span class="sortmark"></span></th>
+        <th data-sortcol="stars" style="cursor:pointer" title="Click to sort 5★ first; click again to flip">HS ★<span class="sortmark"></span></th>
+                <th data-sortcol="home" style="cursor:pointer" title="Click to group by state A→Z (city within a state); click again to flip">Hometown<span class="sortmark"></span></th>
+                <th></th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</main>
+
+<div id="modal">
+  <div class="sheet">
+    <header>
+      <b id="modalTitle"></b>
+      <div id="modalSub" class="small muted" style="margin-top:5px"></div>
+    </header>
+    <div class="body" id="modalBody"></div>
+    <footer>
+      <button class="sec" id="modalClose">Close</button>
+    </footer>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="version.js"></script>
+<script src="config.js"></script>
+<script src="data-loader.js"></script>
+<script src="state.js"></script>
+<script src="transport.js"></script>
+<script src="roster.js"></script>
+<script src="pool-browser.js"></script>
+<script src="used-registry.js"></script>
+<script src="team-colors.js"></script>
+<script src="team-logos.js"></script>
+<script src="dashboard.js"></script>
+<script src="table.js"></script>
+<script src="tb-ratings.js"></script>
+<script src="predict.js"></script>
+<script src="abilities.js"></script>
+<script src="generator.js"></script>
+</body>
+</html>

@@ -1,0 +1,751 @@
+{
+ "collected": 5861,
+ "usable": 5377,
+ "photoCoverage": {
+  "filled": 5377,
+  "total": 5861,
+  "pct": 91.7
+ },
+ "tones": {
+  "1": 119,
+  "2": 1796,
+  "3": 436,
+  "4": 431,
+  "5": 279,
+  "6": 513,
+  "7": 1564,
+  "8": 239
+ },
+ "byClass": {
+  "FR": 1809,
+  "SO": 1515,
+  "JR": 1287,
+  "SR": 1250
+ },
+ "redshirt": {
+  "known": 3797,
+  "yes": 1788
+ },
+ "topStates": [
+  [
+   "TX",
+   722
+  ],
+  [
+   "CA",
+   494
+  ],
+  [
+   "FL",
+   404
+  ],
+  [
+   "GA",
+   402
+  ],
+  [
+   "LA",
+   323
+  ],
+  [
+   "SC",
+   271
+  ],
+  [
+   "NC",
+   261
+  ],
+  [
+   "AL",
+   241
+  ]
+ ],
+ "depth": {
+  "full": {
+   "byPos": {
+    "QB": 301,
+    "HB": 411,
+    "FB": 10,
+    "WR": 819,
+    "TE": 339,
+    "OL": 985,
+    "DL": 640,
+    "EDGE": 171,
+    "DT": 131,
+    "LB": 721,
+    "DB": 735,
+    "CB": 181,
+    "S": 189,
+    "K": 164,
+    "P": 64
+   },
+   "rosters": 32,
+   "bottleneck": [
+    "P"
+   ]
+  },
+  "usable": {
+   "byPos": {
+    "QB": 277,
+    "HB": 374,
+    "FB": 7,
+    "WR": 752,
+    "TE": 320,
+    "OL": 919,
+    "DL": 582,
+    "EDGE": 154,
+    "DT": 120,
+    "LB": 665,
+    "DB": 688,
+    "CB": 154,
+    "S": 166,
+    "K": 143,
+    "P": 56
+   },
+   "rosters": 28,
+   "bottleneck": [
+    "P"
+   ]
+  }
+ },
+ "pipelines": [
+  {
+   "id": "east-texas",
+   "name": "East Texas",
+   "tier": "ELITE",
+   "full": {
+    "have": 415,
+    "target": 397,
+    "gap": -18
+   },
+   "usable": {
+    "have": 367,
+    "target": 364,
+    "gap": -3
+   }
+  },
+  {
+   "id": "southern-california",
+   "name": "Southern California",
+   "tier": "ELITE",
+   "full": {
+    "have": 325,
+    "target": 366,
+    "gap": 41
+   },
+   "usable": {
+    "have": 281,
+    "target": 336,
+    "gap": 55
+   }
+  },
+  {
+   "id": "north-texas",
+   "name": "North Texas",
+   "tier": "ELITE",
+   "full": {
+    "have": 245,
+    "target": 353,
+    "gap": 108
+   },
+   "usable": {
+    "have": 228,
+    "target": 324,
+    "gap": 96
+   }
+  },
+  {
+   "id": "central-florida",
+   "name": "Central Florida",
+   "tier": "ELITE",
+   "full": {
+    "have": 237,
+    "target": 331,
+    "gap": 94
+   },
+   "usable": {
+    "have": 208,
+    "target": 304,
+    "gap": 96
+   }
+  },
+  {
+   "id": "metro-atlanta",
+   "name": "Metro Atlanta",
+   "tier": "ELITE",
+   "full": {
+    "have": 322,
+    "target": 322,
+    "gap": 0
+   },
+   "usable": {
+    "have": 293,
+    "target": 295,
+    "gap": 2
+   }
+  },
+  {
+   "id": "tidewater",
+   "name": "Tidewater",
+   "tier": "MAJOR",
+   "full": {
+    "have": 363,
+    "target": 291,
+    "gap": -72
+   },
+   "usable": {
+    "have": 324,
+    "target": 267,
+    "gap": -57
+   }
+  },
+  {
+   "id": "south-florida",
+   "name": "South Florida",
+   "tier": "MAJOR",
+   "full": {
+    "have": 91,
+    "target": 245,
+    "gap": 154
+   },
+   "usable": {
+    "have": 85,
+    "target": 224,
+    "gap": 139
+   }
+  },
+  {
+   "id": "ohio",
+   "name": "Ohio",
+   "tier": "MAJOR",
+   "full": {
+    "have": 215,
+    "target": 243,
+    "gap": 28
+   },
+   "usable": {
+    "have": 207,
+    "target": 223,
+    "gap": 16
+   }
+  },
+  {
+   "id": "alabama",
+   "name": "Alabama",
+   "tier": "MAJOR",
+   "full": {
+    "have": 241,
+    "target": 220,
+    "gap": -21
+   },
+   "usable": {
+    "have": 221,
+    "target": 202,
+    "gap": -19
+   }
+  },
+  {
+   "id": "north-carolina",
+   "name": "North Carolina",
+   "tier": "MAJOR",
+   "full": {
+    "have": 261,
+    "target": 201,
+    "gap": -60
+   },
+   "usable": {
+    "have": 245,
+    "target": 184,
+    "gap": -61
+   }
+  },
+  {
+   "id": "louisiana",
+   "name": "Louisiana",
+   "tier": "MAJOR",
+   "full": {
+    "have": 323,
+    "target": 187,
+    "gap": -136
+   },
+   "usable": {
+    "have": 316,
+    "target": 171,
+    "gap": -145
+   }
+  },
+  {
+   "id": "south-georgia",
+   "name": "South Georgia",
+   "tier": "MAJOR",
+   "full": {
+    "have": 80,
+    "target": 179,
+    "gap": 99
+   },
+   "usable": {
+    "have": 72,
+    "target": 164,
+    "gap": 92
+   }
+  },
+  {
+   "id": "big-apple",
+   "name": "Big Apple",
+   "tier": "MAJOR",
+   "full": {
+    "have": 196,
+    "target": 239,
+    "gap": 43
+   },
+   "usable": {
+    "have": 179,
+    "target": 219,
+    "gap": 40
+   }
+  },
+  {
+   "id": "northern-california",
+   "name": "Northern California",
+   "tier": "MAJOR",
+   "full": {
+    "have": 169,
+    "target": 158,
+    "gap": -11
+   },
+   "usable": {
+    "have": 140,
+    "target": 145,
+    "gap": 5
+   }
+  },
+  {
+   "id": "michigan",
+   "name": "Michigan",
+   "tier": "MINOR",
+   "full": {
+    "have": 129,
+    "target": 152,
+    "gap": 23
+   },
+   "usable": {
+    "have": 127,
+    "target": 139,
+    "gap": 12
+   }
+  },
+  {
+   "id": "illinois",
+   "name": "Illinois",
+   "tier": "MINOR",
+   "full": {
+    "have": 161,
+    "target": 156,
+    "gap": -5
+   },
+   "usable": {
+    "have": 140,
+    "target": 143,
+    "gap": 3
+   }
+  },
+  {
+   "id": "tennessee",
+   "name": "Tennessee",
+   "tier": "MINOR",
+   "full": {
+    "have": 136,
+    "target": 143,
+    "gap": 7
+   },
+   "usable": {
+    "have": 126,
+    "target": 131,
+    "gap": 5
+   }
+  },
+  {
+   "id": "south-carolina",
+   "name": "South Carolina",
+   "tier": "MINOR",
+   "full": {
+    "have": 271,
+    "target": 114,
+    "gap": -157
+   },
+   "usable": {
+    "have": 264,
+    "target": 104,
+    "gap": -160
+   }
+  },
+  {
+   "id": "mississippi",
+   "name": "Mississippi",
+   "tier": "MINOR",
+   "full": {
+    "have": 140,
+    "target": 125,
+    "gap": -15
+   },
+   "usable": {
+    "have": 129,
+    "target": 115,
+    "gap": -14
+   }
+  },
+  {
+   "id": "pennsylvania",
+   "name": "Pennsylvania",
+   "tier": "MINOR",
+   "full": {
+    "have": 115,
+    "target": 121,
+    "gap": 6
+   },
+   "usable": {
+    "have": 111,
+    "target": 111,
+    "gap": 0
+   }
+  },
+  {
+   "id": "arizona",
+   "name": "Arizona",
+   "tier": "MINOR",
+   "full": {
+    "have": 115,
+    "target": 106,
+    "gap": -9
+   },
+   "usable": {
+    "have": 103,
+    "target": 97,
+    "gap": -6
+   }
+  },
+  {
+   "id": "pacific-northwest",
+   "name": "Pacific Northwest",
+   "tier": "MINOR",
+   "full": {
+    "have": 106,
+    "target": 110,
+    "gap": 4
+   },
+   "usable": {
+    "have": 104,
+    "target": 101,
+    "gap": -3
+   }
+  },
+  {
+   "id": "north-florida",
+   "name": "North Florida",
+   "tier": "MINOR",
+   "full": {
+    "have": 76,
+    "target": 98,
+    "gap": 22
+   },
+   "usable": {
+    "have": 70,
+    "target": 90,
+    "gap": 20
+   }
+  },
+  {
+   "id": "indiana",
+   "name": "Indiana",
+   "tier": "MINOR",
+   "full": {
+    "have": 64,
+    "target": 94,
+    "gap": 30
+   },
+   "usable": {
+    "have": 62,
+    "target": 86,
+    "gap": 24
+   }
+  },
+  {
+   "id": "missouri",
+   "name": "Missouri",
+   "tier": "MINOR",
+   "full": {
+    "have": 73,
+    "target": 94,
+    "gap": 21
+   },
+   "usable": {
+    "have": 66,
+    "target": 86,
+    "gap": 20
+   }
+  },
+  {
+   "id": "utah",
+   "name": "Utah",
+   "tier": "MINOR",
+   "full": {
+    "have": 87,
+    "target": 75,
+    "gap": -12
+   },
+   "usable": {
+    "have": 87,
+    "target": 69,
+    "gap": -18
+   }
+  },
+  {
+   "id": "new-england",
+   "name": "New England",
+   "tier": "MINOR",
+   "full": {
+    "have": 116,
+    "target": 73,
+    "gap": -43
+   },
+   "usable": {
+    "have": 89,
+    "target": 67,
+    "gap": -22
+   }
+  },
+  {
+   "id": "oklahoma",
+   "name": "Oklahoma",
+   "tier": "MINOR",
+   "full": {
+    "have": 30,
+    "target": 75,
+    "gap": 45
+   },
+   "usable": {
+    "have": 30,
+    "target": 69,
+    "gap": 39
+   }
+  },
+  {
+   "id": "colorado",
+   "name": "Colorado",
+   "tier": "MINOR",
+   "full": {
+    "have": 35,
+    "target": 58,
+    "gap": 23
+   },
+   "usable": {
+    "have": 30,
+    "target": 53,
+    "gap": 23
+   }
+  },
+  {
+   "id": "kentucky",
+   "name": "Kentucky",
+   "tier": "MINOR",
+   "full": {
+    "have": 60,
+    "target": 52,
+    "gap": -8
+   },
+   "usable": {
+    "have": 58,
+    "target": 48,
+    "gap": -10
+   }
+  },
+  {
+   "id": "wisconsin",
+   "name": "Wisconsin",
+   "tier": "MINOR",
+   "full": {
+    "have": 34,
+    "target": 48,
+    "gap": 14
+   },
+   "usable": {
+    "have": 29,
+    "target": 44,
+    "gap": 15
+   }
+  },
+  {
+   "id": "hawaii",
+   "name": "Hawaii",
+   "tier": "MINOR",
+   "full": {
+    "have": 24,
+    "target": 52,
+    "gap": 28
+   },
+   "usable": {
+    "have": 21,
+    "target": 48,
+    "gap": 27
+   }
+  },
+  {
+   "id": "southwest-texas",
+   "name": "Southwest Texas",
+   "tier": "MINOR",
+   "full": {
+    "have": 62,
+    "target": 48,
+    "gap": -14
+   },
+   "usable": {
+    "have": 56,
+    "target": 44,
+    "gap": -12
+   }
+  },
+  {
+   "id": "nevada",
+   "name": "Nevada",
+   "tier": "MINOR",
+   "full": {
+    "have": 23,
+    "target": 48,
+    "gap": 25
+   },
+   "usable": {
+    "have": 21,
+    "target": 44,
+    "gap": 23
+   }
+  },
+  {
+   "id": "arkansas",
+   "name": "Arkansas",
+   "tier": "MINOR",
+   "full": {
+    "have": 118,
+    "target": 42,
+    "gap": -76
+   },
+   "usable": {
+    "have": 108,
+    "target": 39,
+    "gap": -69
+   }
+  },
+  {
+   "id": "iowa",
+   "name": "Iowa",
+   "tier": "MINOR",
+   "full": {
+    "have": 106,
+    "target": 36,
+    "gap": -70
+   },
+   "usable": {
+    "have": 102,
+    "target": 33,
+    "gap": -69
+   }
+  },
+  {
+   "id": "kansas",
+   "name": "Kansas",
+   "tier": "MINOR",
+   "full": {
+    "have": 15,
+    "target": 40,
+    "gap": 25
+   },
+   "usable": {
+    "have": 15,
+    "target": 37,
+    "gap": 22
+   }
+  },
+  {
+   "id": "minnesota",
+   "name": "Minnesota",
+   "tier": "MINOR",
+   "full": {
+    "have": 33,
+    "target": 31,
+    "gap": -2
+   },
+   "usable": {
+    "have": 31,
+    "target": 28,
+    "gap": -3
+   }
+  },
+  {
+   "id": "nebraska",
+   "name": "Nebraska",
+   "tier": "MINOR",
+   "full": {
+    "have": 18,
+    "target": 21,
+    "gap": 3
+   },
+   "usable": {
+    "have": 13,
+    "target": 20,
+    "gap": 7
+   }
+  },
+  {
+   "id": "big-sky",
+   "name": "Big Sky",
+   "tier": "MINOR",
+   "full": {
+    "have": 130,
+    "target": 17,
+    "gap": -113
+   },
+   "usable": {
+    "have": 126,
+    "target": 16,
+    "gap": -110
+   }
+  },
+  {
+   "id": "west-virginia",
+   "name": "West Virginia",
+   "tier": "MINOR",
+   "full": {
+    "have": 17,
+    "target": 17,
+    "gap": 0
+   },
+   "usable": {
+    "have": 16,
+    "target": 16,
+    "gap": 0
+   }
+  },
+  {
+   "id": "new-mexico",
+   "name": "New Mexico",
+   "tier": "MINOR",
+   "full": {
+    "have": 4,
+    "target": 10,
+    "gap": 6
+   },
+   "usable": {
+    "have": 4,
+    "target": 9,
+    "gap": 5
+   }
+  }
+ ],
+ "placed": {
+  "full": 5781,
+  "usable": 5304
+ },
+ "unplaced": {
+  "full": 80,
+  "usable": 73
+ }
+}

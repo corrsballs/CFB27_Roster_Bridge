@@ -1,5 +1,3 @@
-# CFB27_Roster_Bridge_v1.0.0
-Chrome extension that puts real college players into your EA Sports CFB27 Team Builder rosters and lets you edit their ratings.
 # CFB27 Roster Bridge
 
 Unofficial Chrome extension for EA CFB 27 Team Builder: build a full recruit
@@ -60,4 +58,3 @@ a fan tool that automates EA's own Team Builder web interface; use it at your
 own risk and subject to EA's terms of service.
 
 Provided **as is, without warranty of any kind** (see LICENSE).
-

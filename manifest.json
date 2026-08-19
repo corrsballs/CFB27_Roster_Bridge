@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "CFB27 Roster Bridge",
+  "version": "1.0.0",
+  "description": "Pull a roster out of EA Team Builder, regenerate realistic ratings, and push it straight back — without leaving the browser.",
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "debugger"
+  ],
+  "host_permissions": [
+    "https://www.ea.com/*",
+    "https://cdn.mcr.ea.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "img/icon16.png",
+    "48": "img/icon48.png",
+    "128": "img/icon128.png"
+  },
+  "action": {
+    "default_title": "Open CFB27 Roster Bridge",
+    "default_icon": {
+      "16": "img/icon16.png",
+      "48": "img/icon48.png",
+      "128": "img/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.ea.com/*team-builder*"
+      ],
+      "js": [
+        "tb-urls.js",
+        "content.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}
