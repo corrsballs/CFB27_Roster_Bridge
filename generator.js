@@ -607,18 +607,57 @@ function initCFB27Generator(data) {
         }
     }
     const PRED_FLOOR = 41;
-    function floorBench(P, baseOvrs) {
-        for (const [pid, p] of Object.entries(players())) {
-            const pos = posOf(p);
-            if (!OFF_POS.has(pos) && !DEF_POS.has(pos)) continue;
-            for (let step = 0; step < 60; step++) {
-                const v = P.predictPlayer(p, null);
-                if (v === null || v >= PRED_FLOOR) break;
-                const next = ovrOf(p) + 1;
-                if (next > 99) break;
+    const FLOOR_BAND = 8;
+    const FLOOR_GAP = 4;
+    function walkToFloorBand(pid, want, seatCap, P, baseOvrs) {
+        const p = players()[pid];
+        const start = ovrOf(p);
+        let best = null, bestErr = Infinity, firstClear = null;
+        for (let step = 0; step <= 60; step++) {
+            const next = start + step;
+            if (next > 99) break;
+            if (next !== ovrOf(p)) {
                 p.PLYR_OVERALLRATING = String(next);
                 regenOnePlayer(pid, baseOvrs);
             }
+            const v = P.predictPlayer(p, null);
+            if (v === null) break;
+            if (v < PRED_FLOOR) continue;
+            if (firstClear === null) firstClear = next;
+            const seat = teamScore(P, p);
+            if (seat !== null && seatCap !== null && seat > seatCap) break;
+            const err = Math.abs(want - v);
+            if (err < bestErr) {
+                bestErr = err;
+                best = next;
+            }
+            if (v > want + 4) break;
+        }
+        const land = best !== null ? best : firstClear;
+        if (land !== null && ovrOf(p) !== land) {
+            p.PLYR_OVERALLRATING = String(land);
+            regenOnePlayer(pid, baseOvrs);
+        }
+        return land;
+    }
+    function floorBench(P, baseOvrs, wantOff, wantDef) {
+        const rawOvr = pid => parseInt(RAW.teamData.roster.playerData[pid].PLYR_OVERALLRATING, 10) || 0;
+        for (const [side, want] of [ [ OFF_POS, wantOff ], [ DEF_POS, wantDef ] ]) {
+            const low = [];
+            for (const [pid, p] of Object.entries(players())) {
+                if (!side.has(posOf(p))) continue;
+                const v = P.predictPlayer(p, null);
+                if (v !== null && v < PRED_FLOOR) low.push(pid);
+            }
+            if (!low.length) continue;
+            low.sort((a, b) => rawOvr(b) - rawOvr(a) || (a < b ? -1 : a > b ? 1 : 0));
+            const band = Math.max(0, Math.min(FLOOR_BAND, Math.floor(want) - FLOOR_GAP - PRED_FLOOR));
+            const seatCap = want - FLOOR_GAP;
+            const n = low.length;
+            low.forEach((pid, i) => {
+                const t = n > 1 ? PRED_FLOOR + band * (n - 1 - i) / (n - 1) : PRED_FLOOR;
+                walkToFloorBand(pid, t, seatCap, P, baseOvrs);
+            });
         }
     }
     function applyTemplateId(scheme) {
@@ -676,7 +715,7 @@ function initCFB27Generator(data) {
             levelLineup(DEF_POS, wantPredDef, P, baseOvrs);
             fineTunePredicted(OFF_POS, wantPredOff, P, baseOvrs);
             fineTunePredicted(DEF_POS, wantPredDef, P, baseOvrs);
-            floorBench(P, baseOvrs);
+            floorBench(P, baseOvrs, wantPredOff, wantPredDef);
             displayTrim(OFF_POS, wantPredOff, P, baseOvrs);
             displayTrim(DEF_POS, wantPredDef, P, baseOvrs);
             gotPredOff = predictedSide(OFF_POS, P);

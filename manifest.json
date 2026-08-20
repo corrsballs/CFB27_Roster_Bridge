@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "CFB27 Roster Bridge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pull a roster out of EA Team Builder, regenerate realistic ratings, and push it straight back — without leaving the browser.",
   "permissions": [
     "storage",
